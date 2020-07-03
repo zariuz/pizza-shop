@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -7,12 +7,19 @@ import Cart from './components/Cart';
 import NotFound from './components/NotFound/index';
 
 function App() {
+  const [pizzas, setPizzas] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3000/db.json')
+      .then((resp) => resp.json())
+      .then((json) => setPizzas(json.pizzas));
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" render={() => <Home pizzas={pizzas} />} />
           <Route path="/cart" component={Cart} />
           <Route path="/" component={NotFound} />
         </Switch>
