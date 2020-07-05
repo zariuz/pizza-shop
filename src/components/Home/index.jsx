@@ -5,8 +5,6 @@ import SortPopup from '../SortPopup';
 import PizzaBlock from '../PizzaBlock';
 
 export default function Home({ pizzas }) {
-  console.log(pizzas);
-
   return (
     <div className="container">
       <div className="content__top">
@@ -21,12 +19,7 @@ export default function Home({ pizzas }) {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {pizzas.map((obj) => (
-          <PizzaBlock
-            key={obj.id}
-            imageUrl={obj.imageUrl}
-            name={obj.name}
-            price={obj.price}
-          />
+          <PizzaBlock key={obj.id} {...obj} />
         ))}
       </div>
     </div>
