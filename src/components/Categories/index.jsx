@@ -4,6 +4,7 @@ export default function Categories({ items, onClickItem }) {
   const [isActive, setIsActive] = useState(null);
   const onSelectItem = (index) => {
     setIsActive(index);
+    onClickItem(index);
   };
 
   return (

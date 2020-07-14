@@ -1,16 +1,11 @@
-import { createStore, combineReducers } from 'redux';
-
-import pizzasReducer from './reducers/pizzas';
-import cartReducer from './reducers/cart';
-
-const rootReducer = combineReducers({
-  pizzas: pizzasReducer,
-  cart: cartReducer,
-});
+import { createStore } from 'redux';
+import rootReducer from './reducers';
 
 const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
+
+window.store = store;
 
 export default store;

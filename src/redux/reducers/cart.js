@@ -6,8 +6,8 @@ const initialState = {
   },
 };
 
-function cartReducer(state = initialState, action) {
+const cartReducer = (state = initialState, action) => {
   return state;
-}
+};
 
 export default cartReducer;

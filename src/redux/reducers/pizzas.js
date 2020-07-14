@@ -1,15 +1,18 @@
+import { setPizzas } from '../actions/pizzas';
+
 const initialState = {
-  pizzas: [],
+  items: [],
+  isLoaded: false,
 };
 
-function pizzasReducer(state = initialState, action) {
+const pizzasReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_PIZZA':
-      return { ...state, pizzas: [1] };
+    case 'SET_PIZZAS':
+      return { ...state, items: action.payload };
 
     default:
       return state;
   }
-}
+};
 
 export default pizzasReducer;

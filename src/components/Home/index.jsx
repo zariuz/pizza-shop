@@ -1,10 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Categories from '../Categories';
 import SortPopup from '../SortPopup';
 import PizzaBlock from '../PizzaBlock';
 
-export default function Home({ pizzas }) {
+export default function Home() {
+  const { pizzas } = useSelector(({ pizzas }) => {
+    return {
+      pizzas: pizzas.items,
+    };
+  });
+
   return (
     <div className="container">
       <div className="content__top">
@@ -14,13 +21,17 @@ export default function Home({ pizzas }) {
           }}
           items={['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']}
         />
-        <SortPopup items={['популярности', 'цене', 'алфавиту']} />
+        <SortPopup
+          items={[
+            { name: 'популярности', type: 'popular' },
+            { name: 'цене', type: 'price' },
+            { name: 'алфавиту', type: 'alphabet' },
+          ]}
+        />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {pizzas.map((obj) => (
-          <PizzaBlock key={obj.id} {...obj} />
-        ))}
+        {pizzas && pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />)}
       </div>
     </div>
   );
