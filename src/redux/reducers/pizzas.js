@@ -1,5 +1,3 @@
-import { setPizzas } from '../actions/pizzas';
-
 const initialState = {
   items: [],
   isLoaded: false,

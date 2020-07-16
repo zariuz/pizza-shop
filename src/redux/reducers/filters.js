@@ -1,5 +1,3 @@
-import { setSortBy, setCategory } from '../actions/filters';
-
 const initialState = {
   category: 0,
   sortBy: 'popular',
