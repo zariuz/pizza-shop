@@ -4,41 +4,66 @@ import { useSelector, useDispatch } from 'react-redux';
 import Categories from '../Categories';
 import SortPopup from '../SortPopup';
 import PizzaBlock from '../PizzaBlock';
-import { setCategory } from '../../redux/actions/filters';
-import { fetchPizzas } from '../../redux/actions/pizzas';
 import PizzaLoading from '../PizzaBlock/PizzaLoading';
+import { setCategory, setSortBy } from '../../redux/actions/filters';
+import { fetchPizzas } from '../../redux/actions/pizzas';
+import { addPizzaToCart } from '../../redux/actions/cart';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortItems = [
-  { name: 'популярности', type: 'popular' },
-  { name: 'цене', type: 'price' },
-  { name: 'алфавиту', type: 'alphabet' },
+  { name: 'популярности', type: 'popular', order: 'desc' },
+  { name: 'цене', type: 'price', order: 'desc' },
+  { name: 'алфавиту', type: 'name', order: 'asc' },
 ];
 
 const Home = () => {
   const dispatch = useDispatch();
-  const pizzas = useSelector(({ pizzas }) => pizzas.items);
+  const items = useSelector(({ pizzas }) => pizzas.items);
   const isLoaded = useSelector(({ pizzas }) => pizzas.isLoaded);
+  const { category, sortBy } = useSelector(({ filters }) => filters);
 
   useEffect(() => {
-    dispatch(fetchPizzas());
-  }, []);
+    dispatch(fetchPizzas(sortBy, category));
+  }, [category, sortBy]);
 
-  const onSelecCategory = useCallback((index) => {
+  const onSelectCategory = useCallback((index) => {
     dispatch(setCategory(index));
   }, []);
+
+  const onSelectSortType = useCallback((type) => {
+    dispatch(setSortBy(type));
+  }, []);
+
+  // dispatch(addPizzaToCart());
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories onClickItem={onSelecCategory} items={categoryNames} />
-        <SortPopup items={sortItems} />
+        <Categories
+          onClickCategory={onSelectCategory}
+          items={categoryNames}
+          activeCategory={category}
+        />
+        <SortPopup
+          items={sortItems}
+          activeSortType={sortBy.type}
+          onClickSortType={onSelectSortType}
+        />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoaded
-          ? pizzas.map((obj) => <PizzaBlock key={obj.id} isLoading={true} {...obj} />)
-          : Array(12).fill(<PizzaLoading />)}
+          ? items.map((obj) => (
+              <PizzaBlock
+                onClickAddPizza={(obj) => console.log(obj)}
+                key={obj.id}
+                isLoading={true}
+                {...obj}
+              />
+            ))
+          : Array(12)
+              .fill(0)
+              .map((_, index) => <PizzaLoading key={index} />)}
       </div>
     </div>
   );

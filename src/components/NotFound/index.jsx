@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function NotFound() {
+const NotFound = () => {
   return <div>Такой страницы нет (:</div>;
-}
+};
+
+export default NotFound;

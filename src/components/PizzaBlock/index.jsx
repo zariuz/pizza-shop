@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import PizzaLoading from './PizzaLoading';
+import Button from './../Button/index';
 
-export default function PizzaBlock({ imageUrl, name, price, types, sizes }) {
+const PizzaBlock = ({ id, imageUrl, name, price, types, sizes, onClickAddPizza }) => {
   const typeNames = ['тонкое', 'традиционное'];
   const availableSizes = [26, 30, 40];
 
@@ -56,7 +56,10 @@ export default function PizzaBlock({ imageUrl, name, price, types, sizes }) {
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <div className="button button--outline button--add">
+        <Button
+          onClick={() => onClickAddPizza({ id, imageUrl, name, price, types, sizes })}
+          className="button--add"
+          outline>
           <svg
             width="12"
             height="12"
@@ -70,11 +73,11 @@ export default function PizzaBlock({ imageUrl, name, price, types, sizes }) {
           </svg>
           <span>Добавить</span>
           <i>2</i>
-        </div>
+        </Button>
       </div>
     </div>
   );
-}
+};
 
 PizzaBlock.propTypes = {
   name: PropTypes.string.isRequired,
@@ -82,6 +85,7 @@ PizzaBlock.propTypes = {
   price: PropTypes.number.isRequired,
   types: PropTypes.arrayOf(PropTypes.number).isRequired,
   sizes: PropTypes.arrayOf(PropTypes.number).isRequired,
+  onAddPizza: PropTypes.func,
 };
 
 PizzaBlock.defaultProps = {
@@ -90,3 +94,5 @@ PizzaBlock.defaultProps = {
   types: [],
   sizes: [],
 };
+
+export default PizzaBlock;
