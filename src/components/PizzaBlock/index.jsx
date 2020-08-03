@@ -3,8 +3,17 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Button from './../Button/index';
 
-const PizzaBlock = ({ id, imageUrl, name, price, types, sizes, onClickAddPizza }) => {
-  const typeNames = ['тонкое', 'традиционное'];
+const PizzaBlock = ({
+  id,
+  imageUrl,
+  name,
+  price,
+  types,
+  sizes,
+  addedCount,
+  onClickAddPizza,
+}) => {
+  const availableTypes = ['тонкое', 'традиционное'];
   const availableSizes = [26, 30, 40];
 
   const [activeType, setActiveType] = useState(types[0]);
@@ -18,13 +27,25 @@ const PizzaBlock = ({ id, imageUrl, name, price, types, sizes, onClickAddPizza }
     setActiveSize(index);
   };
 
+  const onAddPizza = () => {
+    const obj = {
+      id,
+      name,
+      imageUrl,
+      price,
+      size: activeSize,
+      type: availableTypes[activeType],
+    };
+    onClickAddPizza(obj);
+  };
+
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
       <h4 className="pizza-block__title">{name}</h4>
       <div className="pizza-block__selector">
         <ul>
-          {typeNames.map((type, index) => (
+          {availableTypes.map((type, index) => (
             <li
               key={type}
               className={classNames({
@@ -56,10 +77,7 @@ const PizzaBlock = ({ id, imageUrl, name, price, types, sizes, onClickAddPizza }
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <Button
-          onClick={() => onClickAddPizza({ id, imageUrl, name, price, types, sizes })}
-          className="button--add"
-          outline>
+        <Button onClick={onAddPizza} className="button--add" outline>
           <svg
             width="12"
             height="12"
@@ -72,7 +90,7 @@ const PizzaBlock = ({ id, imageUrl, name, price, types, sizes, onClickAddPizza }
             />
           </svg>
           <span>Добавить</span>
-          <i>2</i>
+          {addedCount && <i>{addedCount}</i>}
         </Button>
       </div>
     </div>
@@ -86,6 +104,7 @@ PizzaBlock.propTypes = {
   types: PropTypes.arrayOf(PropTypes.number).isRequired,
   sizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   onAddPizza: PropTypes.func,
+  addedCount: PropTypes.number,
 };
 
 PizzaBlock.defaultProps = {
