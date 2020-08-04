@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CartItem = ({ name, type, size, imageUrl }) => {
+const CartItem = ({ name, type, size, imageUrl, totalPrice }) => {
   return (
     <div className="cart__item">
       <div className="cart__item-img">
@@ -51,7 +51,7 @@ const CartItem = ({ name, type, size, imageUrl }) => {
         </div>
       </div>
       <div className="cart__item-price">
-        <b>770 ₽</b>
+        <b>{totalPrice} ₽</b>
       </div>
       <div className="cart__item-remove">
         <div className="button button--outline button--circle">

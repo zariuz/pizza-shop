@@ -94,6 +94,7 @@ const Cart = () => {
               type={obj.type}
               size={obj.size}
               imageUrl={obj.imageUrl}
+              totalPrice={''}
             />
           ))}
         </div>
