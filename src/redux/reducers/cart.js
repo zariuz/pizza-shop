@@ -23,21 +23,46 @@ const cart = (state = initialState, action) => {
         },
       };
 
-      const items = Object.values(newItems).map((obj) => obj.items);
-      const allPizzas = [].concat.apply([], items);
-      const totalPrice = getTotalPrice(allPizzas);
+      const totalCount = Object.keys(newItems).reduce(
+        (sum, key) => newItems[key].items.length + sum,
+        0,
+      );
+      const totalPrice = Object.keys(newItems).reduce(
+        (sum, key) => newItems[key].totalPrice + sum,
+        0,
+      );
 
       return {
         ...state,
         items: newItems,
-        totalCount: allPizzas.length,
+        totalCount,
         totalPrice,
       };
     }
+    case 'PLUS_CART_ITEM':
+      return {
+        items: {},
+        totalPrice: 0,
+        totalCount: 0,
+      };
+    case 'MINUS_CART_ITEM':
+      return {
+        items: {},
+        totalPrice: 0,
+        totalCount: 0,
+      };
     case 'REMOVE_CART_ITEM':
       const newItems = { ...state.items };
+      const currentTotalPrice = newItems[action.payload].totalPrice;
+      const currentTotalCount = newItems[action.payload].items.length;
+
       delete newItems[action.payload];
-      return { ...state, items: newItems };
+      return {
+        ...state,
+        items: newItems,
+        totalPrice: state.totalPrice - currentTotalPrice,
+        totalCount: state.totalCount - currentTotalCount,
+      };
     case 'CLEAR_CART':
       return {
         items: {},
