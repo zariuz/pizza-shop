@@ -10,6 +10,7 @@ import {
   minusCartItem,
 } from '../../redux/actions/cart';
 import emptyCart from '../../assets/img/empty-cart.png';
+import Button from '../Button';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,10 @@ const Cart = () => {
 
   const onMinusItem = (id) => {
     dispatch(minusCartItem(id));
+  };
+
+  const onClickOrder = () => {
+    console.log('ВАШ ЗАКАЗ', items);
   };
 
   return (
@@ -117,7 +122,7 @@ const Cart = () => {
             {addedPizzas.map((obj, index) => (
               <CartItem
                 id={obj.id}
-                key={index}
+                key={obj.id}
                 name={obj.name}
                 type={obj.type}
                 size={obj.size}
@@ -158,16 +163,16 @@ const Cart = () => {
 
                 <span>Вернуться назад</span>
               </Link>
-              <div className="button pay-btn">
+              <Button onClick={onClickOrder} className="pay-btn">
                 <span>Оплатить сейчас</span>
-              </div>
+              </Button>
             </div>
           </div>
         </div>
       ) : (
         <div className="cart cart--empty">
           <h2>
-            Корзина пустая <icon>😕</icon>
+            Корзина пустая <span>😕</span>
           </h2>
           <p>
             Вероятней всего, вы не заказывали ещё пиццу.
