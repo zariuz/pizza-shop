@@ -1,3 +1,11 @@
+import {
+  ADD_PIZZA_CART,
+  PLUS_CART_ITEM,
+  MINUS_CART_ITEM,
+  REMOVE_CART_ITEM,
+  CLEAR_CART,
+} from '../actionTypes';
+
 const initialState = {
   items: {},
   totalPrice: 0,
@@ -10,7 +18,7 @@ const getTotalPrice = (arr) => {
 
 const cart = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_PIZZA_CART': {
+    case ADD_PIZZA_CART: {
       const currentPizzaItem = !state.items[action.payload.id]
         ? [action.payload]
         : [...state.items[action.payload.id].items, action.payload];
@@ -39,7 +47,7 @@ const cart = (state = initialState, action) => {
         totalPrice,
       };
     }
-    case 'PLUS_CART_ITEM': {
+    case PLUS_CART_ITEM: {
       const newObjItems = [
         ...state.items[action.payload].items,
         state.items[action.payload].items[0],
@@ -69,7 +77,7 @@ const cart = (state = initialState, action) => {
         totalPrice,
       };
     }
-    case 'MINUS_CART_ITEM': {
+    case MINUS_CART_ITEM: {
       const oldItems = state.items[action.payload].items;
       const newObjItems =
         oldItems.length > 1 ? state.items[action.payload].items.slice(1) : oldItems;
@@ -98,7 +106,7 @@ const cart = (state = initialState, action) => {
         totalPrice,
       };
     }
-    case 'REMOVE_CART_ITEM':
+    case REMOVE_CART_ITEM:
       const newItems = { ...state.items };
       const currentTotalPrice = newItems[action.payload].totalPrice;
       const currentTotalCount = newItems[action.payload].items.length;
@@ -110,7 +118,7 @@ const cart = (state = initialState, action) => {
         totalPrice: state.totalPrice - currentTotalPrice,
         totalCount: state.totalCount - currentTotalCount,
       };
-    case 'CLEAR_CART':
+    case CLEAR_CART:
       return {
         items: {},
         totalPrice: 0,
