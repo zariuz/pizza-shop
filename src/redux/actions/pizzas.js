@@ -1,6 +1,5 @@
-import axios from 'axios';
-
 import { SET_LOADED, SET_PIZZAS } from '../actionTypes';
+import * as api from '../../api';
 
 export const setLoaded = (payload) => ({
   type: SET_LOADED,
@@ -10,15 +9,9 @@ export const setLoaded = (payload) => ({
 export const fetchPizzas = (sortBy, category) => (dispatch) => {
   dispatch(setLoaded(false));
 
-  axios
-    .get(
-      `/pizzas?${category !== null ? `category=${category}` : ''}&_sort=${
-        sortBy.type
-      }&_order=${sortBy.order}`,
-    )
-    .then(({ data }) => {
-      dispatch(setPizzas(data));
-    });
+  api.getPizzas().then((data) => {
+    dispatch(setPizzas(data));
+  });
 };
 
 export const setPizzas = (items) => ({
