@@ -47,11 +47,11 @@ const Home = () => {
           items={categoryNames}
           activeCategory={category}
         />
-        <SortPopup
+        {/* <SortPopup
           items={sortItems}
           activeSortType={sortBy.type}
           onClickSortType={onSelectSortType}
-        />
+        /> */}
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
