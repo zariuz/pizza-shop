@@ -9,8 +9,8 @@ const CartItem = ({
   type,
   size,
   imageUrl,
-  totalPrice,
-  totalCount,
+  price,
+  itemsCount,
   onRemoveItem,
   onPlusItem,
   onMinusItem,
@@ -58,7 +58,7 @@ const CartItem = ({
             />
           </svg>
         </div>
-        <b>{totalCount}</b>
+        <b>{itemsCount}</b>
         <div
           onClick={handlePlusItem}
           className="button button--outline button--circle cart__item-count-plus">
@@ -80,7 +80,7 @@ const CartItem = ({
         </div>
       </div>
       <div className="cart__item-price">
-        <b>{totalPrice} ₽</b>
+        <b>{price} ₽</b>
       </div>
       <div className="cart__item-remove">
         <Button onClick={handleOnRemoveItem} className="button--circle" outline>
@@ -111,7 +111,7 @@ CartItem.propTypes = {
   size: PropTypes.number.isRequired,
   imageUrl: PropTypes.string.isRequired,
   totalPrice: PropTypes.number,
-  totalCount: PropTypes.number,
+  itemsCount: PropTypes.number,
   onRemoveItem: PropTypes.func,
 };
 

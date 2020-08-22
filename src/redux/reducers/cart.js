@@ -1,3 +1,5 @@
+import { reduce, map } from 'lodash';
+import produce from 'immer';
 import {
   ADD_PIZZA_CART,
   PLUS_CART_ITEM,
@@ -9,124 +11,43 @@ import {
 const initialState = {
   items: {},
   totalPrice: 0,
-  totalCount: 0,
-};
-
-const getTotalPrice = (arr) => {
-  return arr.reduce((sum, obj) => obj.price + sum, 0);
+  itemsCount: 0,
 };
 
 const cart = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_PIZZA_CART: {
-      const currentPizzaItem = !state.items[action.payload.id]
-        ? [action.payload]
-        : [...state.items[action.payload.id].items, action.payload];
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case ADD_PIZZA_CART:
+        if (!draft.items[action.payload.id]) {
+          draft.items[action.payload.id] = [];
+        }
+        draft.items[action.payload.id].push(action.payload);
+        break;
+      case PLUS_CART_ITEM:
+        draft.items[action.payload].push(draft.items[action.payload][0]);
+        break;
+      case MINUS_CART_ITEM:
+        if (draft.items[action.payload].length > 1) {
+          draft.items[action.payload].shift();
+        }
+        break;
+      case REMOVE_CART_ITEM:
+        delete draft.items[action.payload];
+        break;
+      case CLEAR_CART:
+        draft.items = {};
+        draft.totalPrice = 0;
+        draft.totalCount = 0;
+        break;
 
-      const newItems = {
-        ...state.items,
-        [action.payload.id]: {
-          items: currentPizzaItem,
-          totalPrice: getTotalPrice(currentPizzaItem),
-        },
-      };
-
-      const totalCount = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].items.length + sum,
-        0,
-      );
-      const totalPrice = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].totalPrice + sum,
-        0,
-      );
-
-      return {
-        ...state,
-        items: newItems,
-        totalCount,
-        totalPrice,
-      };
+      default:
+        return state;
     }
-    case PLUS_CART_ITEM: {
-      const newObjItems = [
-        ...state.items[action.payload].items,
-        state.items[action.payload].items[0],
-      ];
 
-      const newItems = {
-        ...state.items,
-        [action.payload]: {
-          items: newObjItems,
-          totalPrice: getTotalPrice(newObjItems),
-        },
-      };
-
-      const totalCount = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].items.length + sum,
-        0,
-      );
-      const totalPrice = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].totalPrice + sum,
-        0,
-      );
-
-      return {
-        ...state,
-        items: newItems,
-        totalCount,
-        totalPrice,
-      };
-    }
-    case MINUS_CART_ITEM: {
-      const oldItems = state.items[action.payload].items;
-      const newObjItems =
-        oldItems.length > 1 ? state.items[action.payload].items.slice(1) : oldItems;
-
-      const newItems = {
-        ...state.items,
-        [action.payload]: {
-          items: newObjItems,
-          totalPrice: getTotalPrice(newObjItems),
-        },
-      };
-
-      const totalCount = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].items.length + sum,
-        0,
-      );
-      const totalPrice = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].totalPrice + sum,
-        0,
-      );
-
-      return {
-        ...state,
-        items: newItems,
-        totalCount,
-        totalPrice,
-      };
-    }
-    case REMOVE_CART_ITEM:
-      const newItems = { ...state.items };
-      const currentTotalPrice = newItems[action.payload].totalPrice;
-      const currentTotalCount = newItems[action.payload].items.length;
-
-      delete newItems[action.payload];
-      return {
-        ...state,
-        items: newItems,
-        totalPrice: state.totalPrice - currentTotalPrice,
-        totalCount: state.totalCount - currentTotalCount,
-      };
-    case CLEAR_CART:
-      return {
-        items: {},
-        totalPrice: 0,
-        totalCount: 0,
-      };
-    default:
-      return state;
-  }
+    const result = reduce(map(draft.items), (prev, cur) => prev.concat(cur), []);
+    draft.totalPrice = result.reduce((total, obj) => obj.price + total, 0);
+    draft.itemsCount = result.length;
+  });
 };
 
 export default cart;

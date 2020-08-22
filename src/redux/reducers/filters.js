@@ -1,22 +1,24 @@
+import produce from 'immer';
 import { SET_SORT_BY, SET_CATEGORY } from '../actionTypes';
 
 const initialState = {
   category: null,
-  sortBy: {
-    type: 'popular',
-    order: 'desc',
-  },
+  sortBy: 'price',
 };
 
 const filters = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_SORT_BY:
-      return { ...state, sortBy: action.payload };
-    case SET_CATEGORY:
-      return { ...state, category: action.payload };
-    default:
-      return state;
-  }
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case SET_SORT_BY:
+        draft.sortBy = action.payload;
+        break;
+      case SET_CATEGORY:
+        draft.category = action.payload;
+        break;
+      default:
+        return state;
+    }
+  });
 };
 
 export default filters;

@@ -1,10 +1,11 @@
 import { db, auth } from '../firebase';
 
-export function getPizzas(sortBy, category) {
+export function getPizzas(category, sortBy = 'rating') {
   if (category !== null) {
     return db
       .collection('pizzas')
       .where('category', '==', category)
+      .orderBy(sortBy)
       .get()
       .then((snapshot) => {
         const pizzas = snapshot.docs.map((doc) => ({
@@ -17,6 +18,7 @@ export function getPizzas(sortBy, category) {
   } else {
     return db
       .collection('pizzas')
+      .orderBy(sortBy)
       .get()
       .then((snapshot) => {
         const pizzas = snapshot.docs.map((doc) => ({

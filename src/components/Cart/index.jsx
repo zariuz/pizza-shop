@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { map } from 'lodash';
 
 import CartItem from '../CartItem';
 import {
@@ -15,10 +16,7 @@ import Button from '../Button';
 const Cart = () => {
   const dispatch = useDispatch();
 
-  const { totalPrice, totalCount, items } = useSelector(({ cart }) => cart);
-  const addedPizzas = Object.keys(items).map((key) => {
-    return items[key].items[0];
-  });
+  const { items, totalPrice, itemsCount } = useSelector(({ cart }) => cart);
 
   const onClearCart = () => {
     if (window.confirm('Вы действительно хотите очистить корзину?')) {
@@ -44,7 +42,7 @@ const Cart = () => {
 
   return (
     <div className="container container--cart">
-      {totalCount ? (
+      {itemsCount ? (
         <div className="cart">
           <div className="cart__top">
             <h2 className="content__title">
@@ -119,26 +117,21 @@ const Cart = () => {
             </div>
           </div>
           <div className="content__items">
-            {addedPizzas.map((obj, index) => (
+            {map(items, ([item]) => (
               <CartItem
-                id={obj.id}
-                key={obj.id}
-                name={obj.name}
-                type={obj.type}
-                size={obj.size}
-                imageUrl={obj.imageUrl}
-                totalPrice={items[obj.id].totalPrice}
-                totalCount={items[obj.id].items.length}
+                key={item.id}
+                {...item}
                 onRemoveItem={onRemoveItem}
                 onPlusItem={onPlusItem}
                 onMinusItem={onMinusItem}
+                itemsCount={items[item.id].length}
               />
             ))}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">
               <span>
-                Всего пицц: <b>{totalCount} шт.</b>
+                Всего пицц: <b>{itemsCount} шт.</b>
               </span>
               <span>
                 Сумма заказа: <b>{totalPrice} ₽</b>

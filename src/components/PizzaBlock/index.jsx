@@ -11,11 +11,12 @@ const PizzaBlock = ({
   price,
   types,
   sizes,
-  addedCount,
+  cartItems,
   onClickAddPizza,
 }) => {
   const availableTypes = ['тонкое', 'традиционное'];
   const availableSizes = [26, 30, 40];
+  const addedCount = cartItems[id] ? cartItems[id].length : '';
 
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
@@ -105,7 +106,7 @@ PizzaBlock.propTypes = {
   types: PropTypes.arrayOf(PropTypes.number).isRequired,
   sizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   onAddPizza: PropTypes.func,
-  addedCount: PropTypes.number,
+  cartItems: PropTypes.object,
 };
 
 PizzaBlock.defaultProps = {

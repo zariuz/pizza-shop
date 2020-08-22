@@ -6,9 +6,9 @@ import logo from '../../assets/img/pizza-logo.svg';
 import Button from '../Button';
 
 const Header = () => {
-  const { totalPrice, totalCount } = useSelector(({ cart }) => ({
+  const { totalPrice, itemsCount } = useSelector(({ cart }) => ({
     totalPrice: cart.totalPrice,
-    totalCount: cart.totalCount,
+    itemsCount: cart.itemsCount,
   }));
 
   return (
@@ -57,7 +57,7 @@ const Header = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span>{totalCount}</span>
+              <span>{itemsCount}</span>
             </Button>
           </Link>
         </div>

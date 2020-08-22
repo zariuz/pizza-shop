@@ -1,3 +1,4 @@
+import produce from 'immer';
 import { SET_PIZZAS, SET_LOADED } from '../actionTypes';
 
 const initialState = {
@@ -6,14 +7,19 @@ const initialState = {
 };
 
 const pizzas = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_PIZZAS:
-      return { ...state, items: action.payload, isLoaded: true };
-    case SET_LOADED:
-      return { ...state, isLoaded: action.payload };
-    default:
-      return state;
-  }
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case SET_PIZZAS:
+        draft.items = action.payload;
+        draft.isLoaded = true;
+        break;
+      case SET_LOADED:
+        draft.isLoaded = action.payload;
+        break;
+      default:
+        return state;
+    }
+  });
 };
 
 export default pizzas;
