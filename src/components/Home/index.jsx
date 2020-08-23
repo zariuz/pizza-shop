@@ -20,8 +20,8 @@ const Home = () => {
   ]);
 
   useEffect(() => {
-    dispatch(fetchPizzas(category));
-  }, [category]);
+    dispatch(fetchPizzas(category, sortBy));
+  }, [category, sortBy]);
 
   const onSelectCategory = useCallback((index) => {
     dispatch(setCategory(index));

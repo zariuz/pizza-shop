@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const SortPopup = React.memo(function SortPopup({ sortBy, onClickSortType }) {
-  console.log(sortBy);
   const items = [
-    { type: 'popular', name: 'популярности' },
+    { type: 'rating', name: 'популярности' },
     { type: 'price', name: 'цене' },
     { type: 'name', name: 'алфавиту' },
   ];
@@ -23,8 +22,7 @@ const SortPopup = React.memo(function SortPopup({ sortBy, onClickSortType }) {
   };
 
   const handleOutsideClick = (event) => {
-    const path = event.path || (event.composedPath && event.composedPath());
-    if (path.includes(sortRef.current)) {
+    if (!event.path.includes(sortRef.current)) {
       setVisiblePopup(false);
     }
   };
@@ -34,7 +32,7 @@ const SortPopup = React.memo(function SortPopup({ sortBy, onClickSortType }) {
   }, []);
 
   return (
-    <div ref={sortRef} className="sort">
+    <div className="sort">
       <div className="sort__label">
         <svg
           className={visiblePopup ? 'rotated' : ''}
@@ -52,14 +50,14 @@ const SortPopup = React.memo(function SortPopup({ sortBy, onClickSortType }) {
         <span onClick={toggleVisiblePopup}>{activeLabel}</span>
       </div>
       {visiblePopup && (
-        <div className="sort__popup">
+        <div ref={sortRef} className="sort__popup">
           <ul>
             {items &&
               items.map((obj, index) => (
                 <li
                   className={sortBy === obj.type ? 'active' : ''}
                   onClick={() => {
-                    onSelectItem(obj);
+                    onSelectItem(obj.type);
                   }}
                   key={`${obj.type}_${index}`}>
                   {obj.name}
@@ -73,13 +71,8 @@ const SortPopup = React.memo(function SortPopup({ sortBy, onClickSortType }) {
 });
 
 SortPopup.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortBy: PropTypes.string.isRequired,
   onClickSortType: PropTypes.func.isRequired,
-};
-
-SortPopup.defaultProps = {
-  items: [],
 };
 
 export default SortPopup;

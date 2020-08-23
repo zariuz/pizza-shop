@@ -3,7 +3,7 @@ import { SET_SORT_BY, SET_CATEGORY } from '../actionTypes';
 
 const initialState = {
   category: null,
-  sortBy: 'price',
+  sortBy: 'rating',
 };
 
 const filters = (state = initialState, action) => {
