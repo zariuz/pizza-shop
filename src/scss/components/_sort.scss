@@ -1,6 +1,10 @@
 @import 'variables';
 
 .sort {
+  @include desktop {
+    margin-top: 10px;
+  }
+
   position: relative;
   &__label {
     display: flex;
